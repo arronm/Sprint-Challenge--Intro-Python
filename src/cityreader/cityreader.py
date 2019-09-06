@@ -80,15 +80,55 @@ for c in cities:
 # Tucson: (32.1558,-110.8777)
 # Salt Lake City: (40.7774,-111.9301)
 
+#
+# x1 45
+# x2 32
+# y1 -100
+# y2 -120
+#
+# point1(largest(x1, x2), smallest(y1, y2)) // 45, -120
+# point2(smallest(x1, x2), largest(y1, y2)) // 32, -100
+#
+
+
+def normalize_coords(x1, y1, x2, y2):
+    x_coords = [int(x1), int(x2)]
+    x_coords.sort()
+
+    y_coords = [int(y1), int(y2)]
+    y_coords.sort()
+
+    return (x_coords[1], y_coords[0], x_coords[0], y_coords[1])
+
+
 # TODO Get latitude and longitude values from the user
+# coords1 = input('Enter lat1, lon1: ').replace(',', '').split(' ')
+# coords2 = input('Enter lat2, lon2: ').replace(',', '').split(' ')
 
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
+    lat1, lon1, lat2, lon2 = normalize_coords(lat1, lon1, lat2, lon2)
     # within will hold the cities that fall within the specified region
-    within = []
+    within = [
+        city for city in cities
+        if city.lat < lat1 and city.lon > lon1
+        and city.lat > lat2 and city.lon < lon2
+    ]
 
     # TODO Ensure that the lat and lon valuse are all floats
     # Go through each city and check to see if it falls within
     # the specified coordinates.
 
     return within
+
+
+# within = cityreader_stretch(
+#     coords1[0],
+#     coords1[1],
+#     coords2[0],
+#     coords2[1],
+#     cities
+# )
+
+# for city in within:
+#     print(city)
